@@ -1,16 +1,18 @@
 let impuesto = 1.75;
 let precioFinal = 0;
 
-const storedPersona = localStorage.getItem('persona');
-const persona = storedPersona ? JSON.parse(storedPersona) : {
-  nombre: "",
-  apellido: "",
-  edad: "",
-};
+// const storedPersona = localStorage.getItem('persona');
+// const persona = storedPersona ? JSON.parse(storedPersona) : {
+//   nombre: "",
+//   apellido: "",
+//   edad: "",
+// };
 
-document.getElementById('nombreInput').value = persona.nombre;
-document.getElementById('apellidoInput').value = persona.apellido;
-document.getElementById('edadInput').value = persona.edad;
+const personas = JSON.parse(localStorage.getItem('personas')) || [];
+
+//document.getElementById('nombreInput').value = persona.nombre;
+//document.getElementById('apellidoInput').value = persona.apellido;
+//document.getElementById('edadInput').value = persona.edad;
 
 const form = document.getElementById('userInfoForm');
 const nombreInput = document.getElementById('nombreInput');
@@ -22,17 +24,16 @@ const precioFinalDiv = document.getElementById('precioFinalDiv');
 
 form.addEventListener('submit', function(event) {
   event.preventDefault();
-  persona.nombre = nombreInput.value;
-  persona.apellido = apellidoInput.value;
-  persona.edad = edadInput.value;
 
-  
-  localStorage.setItem('persona', JSON.stringify(persona));
-
-  
-  mostrarMensaje(`Bienvenido ${persona.nombre} ${persona.apellido}`);
-
-  
+  if(personas.some(persona => persona.nombre == nombreInput.value && persona.apellido == apellidoInput.value)) {
+    mostrarMensaje("Bienvenido otra vez " + nombreInput.value);
+  } else {
+    const persona = {nombre: nombreInput.value,apellido: apellidoInput.value, edad: edadInput.value} 
+    personas.push(persona)
+    mostrarMensaje(`Te has registrado ${persona.nombre} ${persona.apellido}`);
+    localStorage.setItem('personas', JSON.stringify(personas));
+  }
+  event.target.reset()
 });
 
 
@@ -40,6 +41,10 @@ form.addEventListener('submit', function(event) {
 function mostrarMensaje(mensaje) {
   mensageDiv.innerHTML = mensaje;
 }
+
+const btn = document.getElementById('btnCalcular');
+
+btn.onclick = calcularImpuesto;
 
 function calcularImpuesto() {
   const precioProducto = parseFloat(precioProductoInput.value);
