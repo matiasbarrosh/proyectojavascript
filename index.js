@@ -1,18 +1,7 @@
 let impuesto = 1.75;
 let precioFinal = 0;
 
-// const storedPersona = localStorage.getItem('persona');
-// const persona = storedPersona ? JSON.parse(storedPersona) : {
-//   nombre: "",
-//   apellido: "",
-//   edad: "",
-// };
-
 const personas = JSON.parse(localStorage.getItem('personas')) || [];
-
-//document.getElementById('nombreInput').value = persona.nombre;
-//document.getElementById('apellidoInput').value = persona.apellido;
-//document.getElementById('edadInput').value = persona.edad;
 
 const form = document.getElementById('userInfoForm');
 const nombreInput = document.getElementById('nombreInput');
